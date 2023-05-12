@@ -140,4 +140,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Crispy Forms
-CRISPY_TEMPLATE_PACK = "Bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+
