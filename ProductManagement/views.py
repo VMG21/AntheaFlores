@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from db.models import *
 from .forms import *
+from django.contrib.admin.views.decorators import staff_member_required
 
 
+@staff_member_required
 def productCreate(request):
     if request.method == "POST":
         productFormValidation = ProductForm(request.POST, request.FILES)
@@ -16,10 +18,12 @@ def productCreate(request):
     else:
         productForm = ProductForm()
         return render(request, 'ProductManagement/productCreate.html', {"productForm": productForm})
-
+    
+@staff_member_required
 def productList(request):
     return render(request, 'ProductManagement/productList.html', {"productList": Product.objects.all()})
 
+@staff_member_required
 def productModify(request, id):
     #Lista de objetos
     allProducts = Product.objects.all()
@@ -47,7 +51,8 @@ def productModify(request, id):
             "allProducts": allProducts,
             "productForm": productForm,
             })
-    
+
+@staff_member_required
 def productDelete(request, id):
     product = Product.objects.get(id)
     product.delete()

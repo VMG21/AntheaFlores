@@ -1,0 +1,16 @@
+@import url(../fonts/Inter-Light.ttf);
+@import url(../fonts/Inter-Regular.ttf);
+@import url(../fonts/Inter-Bold.ttf);
+
+// Custom.scss
+$primary: #e1c2c1;
+$secondary: #F6871F;
+$blue: #e1c2c1;
+$antheaPink: #e1c2c1;
+
+
+$theme-colors: (
+    "antheaPink": $antheaPink,
+);
+
+@import "../bootstrap/scss/bootstrap.scss";

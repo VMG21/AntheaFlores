@@ -4,10 +4,10 @@ from django.db import models
 ORDER_STATES = [("Cart", "Cart"), ("Confirmado", "Confirmado")]
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
-    image = models.ImageField(upload_to='uploads/product/img', default="")
-    price = models.DecimalField(max_digits=7, decimal_places=2)
+    name = models.CharField(max_length=100, verbose_name="Nombre")
+    description = models.TextField(max_length=500,verbose_name="Descripción")
+    image = models.ImageField(upload_to='uploads/product/img', default="", verbose_name="Imagen")
+    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Precio (MXN)")
 
     def __str__(self):
         return self.name
