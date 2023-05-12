@@ -1,0 +1,48 @@
+{% load crispy_forms_tags %}
+{% include 'layout.html' %}
+{% block body %}
+    <table class="table table-borderless">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>Image</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Price</td>
+                <td>Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in productList %}
+                <tr>
+                    {% if product.image %}
+                        <td>
+                            <img src="{{ product.image.url }}" alt="https://img-9gag-fun.9cache.com/photo/a3Q5VW5_460s.jpg">
+                        </td>
+                    {% else %}
+                        <td>
+                        </td>
+                    {% endif %}
+                    <td>{{product.name}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.price}}</td>
+                    <td>
+                        <div class="container text-center">
+                            <div class="row align-items-start gap-2">
+                              <div class="col">
+                                <a href="{% url 'ProductManagement:productModify' product.id %}" class="btn btn-primary" style="width: 100px !important; height: 35px !important;"><i class="fa fa-pencil"></i> Edit</a>
+                              </div>
+                              <div class="col">
+                                <form action="{% url 'ProductManagement:productDelete' product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" style="width: 100px !important; height: 35px !important;"> <i class="fa fa-trash"></i> Delete</button>
+                                    
+                                </form>
+                              </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

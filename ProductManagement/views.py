@@ -2,7 +2,24 @@ from django.shortcuts import render, redirect
 from db.models import *
 from .forms import *
 
-# Create your views here.
+
+def productCreate(request):
+    if request.method == "POST":
+        productFormValidation = ProductForm(request.POST, request.FILES)
+        if productFormValidation.is_valid():
+            productFormValidation.save()
+            return redirect('Catalog:index')
+        else:
+            return render(request, 'ProductManagement/productCreate.html', {
+                "productForm": productFormValidation
+            })
+    else:
+        productForm = ProductForm()
+        return render(request, 'ProductManagement/productCreate.html', {"productForm": productForm})
+
+def productList(request):
+    return render(request, 'ProductManagement/productList.html', {"productList": Product.objects.all()})
+
 def productModify(request, id):
     #Lista de objetos
     allProducts = Product.objects.all()
@@ -30,3 +47,8 @@ def productModify(request, id):
             "allProducts": allProducts,
             "productForm": productForm,
             })
+    
+def productDelete(request, id):
+    product = Product.objects.get(id)
+    product.delete()
+    return redirect('/productList.html')

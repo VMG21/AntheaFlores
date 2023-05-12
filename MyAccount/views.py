@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from db import models
 
-# Create your views here.
+def product_list(request):
+    context = {
+        'products': models.Product.all()
+    }
+
+    return render(request, "products_list.html", context)
