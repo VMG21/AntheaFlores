@@ -1,23 +1,69 @@
 {% load crispy_forms_tags %}
 {% include 'layout.html' %}
 {% block body %}
-<h1>{{ product.description }}</h1>
-<form action="{% url 'ProductManagement:productModify' product.id %}" method="POST">
-    {% csrf_token %}
-    <div class="row">
-        <div class="col-6">
-            {{ productForm.name|as_crispy_field }}
-            {{ productForm.description|as_crispy_field }}
-            {{ productForm.image|as_crispy_field }}
-        </div>
-       
-      </div>
-    <div class="row justify-content-end">
-        <div class="col-6">
-            <button class="btn btn-primary" type="submit">Enviar</button> 
+<div class="container">
+    <div class="row mt-5 justify-content-center text-center">
+        <div class="col-12">
+            <h2>Editar {{ product.name }}</h2>
         </div>
     </div>
-</form>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
 
-<a href="{% url 'Catalog:index' %}">Catalogo</a>
+                            <form action="{% url 'ProductManagement:productModify' product.id %}" method="POST"
+                                enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-6">
+                                        {{ productForm.name|as_crispy_field }}
+                                    </div>
+                                    <div class="col-4">
+                                        {{ productForm.price|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        {{ productForm.description|as_crispy_field }}
+                                    </div>
+                                    <div class="col-6">
+                                        {{ productForm.image|as_crispy_field|safe }}
+                                        <img id="image-preview" src="#" alt="Preview"
+                                            style="max-width: 200px; max-height: 200px; display: none;" />
+
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <div class="col-6 text-end">
+                                        <button class="btn btn-primary text-white" type="submit"
+                                            style="background-color: #e1c2c1; border-color: #e1c2c1;">Guardar
+                                            cambios</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        var imagePreview = document.getElementById("image-preview");
+
+        reader.onload = function () {
+            if (reader.readyState == 2) {
+                imagePreview.style.display = "block";
+                imagePreview.src = reader.result;
+            }
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 {% endblock %}

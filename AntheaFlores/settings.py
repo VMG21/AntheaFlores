@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'db',
+    'AccountManagementDjango',
     'AccountManagement',
     'Catalog',
     'MyAccount',
@@ -143,3 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
+# Select auth model
+AUTH_USER_MODEL = 'db.User'
+LOGIN_REDIRECT_URL = "Catalog:index"
+LOGOUT_REDIRECT_URL = "login"

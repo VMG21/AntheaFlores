@@ -1,48 +1,110 @@
 {% load crispy_forms_tags %}
 {% include 'layout.html' %}
 {% block body %}
-    <table class="table table-borderless">
-        <thead class="border-bottom font-weight-bold">
-            <tr>
-                <td>Image</td>
-                <td>Name</td>
-                <td>Description</td>
-                <td>Price</td>
-                <td>Actions</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in productList %}
-                <tr>
-                    {% if product.image %}
-                        <td>
-                            <img src="{{ product.image.url }}" alt="https://img-9gag-fun.9cache.com/photo/a3Q5VW5_460s.jpg">
-                        </td>
-                    {% else %}
-                        <td>
-                        </td>
-                    {% endif %}
-                    <td>{{product.name}}</td>
-                    <td>{{product.description}}</td>
-                    <td>{{product.price}}</td>
-                    <td>
-                        <div class="container text-center">
-                            <div class="row align-items-start gap-2">
-                              <div class="col">
-                                <a href="{% url 'ProductManagement:productModify' product.id %}" class="btn btn-primary" style="width: 100px !important; height: 35px !important;"><i class="fa fa-pencil"></i> Edit</a>
-                              </div>
-                              <div class="col">
-                                <form action="{% url 'ProductManagement:productDelete' product.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger" style="width: 100px !important; height: 35px !important;"> <i class="fa fa-trash"></i> Delete</button>
-                                    
-                                </form>
-                              </div>
+<div class="container">
+    <div class="row mt-5 justify-content-between">
+        <div class="col-12 col-sm-6 text-start">
+            <h2>Productos</h2>
+        </div>
+        <div class="col-12 col-sm-6 text-end">
+            <a class="btn btn-antheaPink text-white" href="{% url 'ProductManagement:productCreate' %}"> Registrar nuevo
+                producto</a>
+        </div>
+    </div>
+
+    <form class="row mt-3">
+        <div class="col-12">
+            <label class="visually-hidden" for="inlineFormInputGroupUsername">Buscar productos</label>
+            <div class="input-group">
+                <div class="input-group-text bg-white"><span class="material-icons" style="color: #e1c2c1;">
+                        search
+                    </span></div>
+                <input type="text" class="form-control border-start-0" id="inlineFormInputGroupUsername"
+                    placeholder="Buscar productos">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table ">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            <td>Imagen</td>
+                            <td>Nombre</td>
+                            <td>Descripción</td>
+                            <td>Precio</td>
+                            <td class="text-center">Acciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in productList %}
+                        <!-- Button trigger modal -->
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ product.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar {{ product.name }}
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Estas seguro que deseas eliminar el producto?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'ProductManagement:productDelete' product.id %}"
+                                            method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-antheaPink text-white"
+                                                style="width: 100px !important; height: 35px !important;"> <i
+                                                    class="fa fa-trash"></i> Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                        <tr>
+                            {% if product.image %}
+                            <td>
+                                <img src="{{ product.image.url }}"
+                                    alt="https://img-9gag-fun.9cache.com/photo/a3Q5VW5_460s.jpg"
+                                    style="max-width: 100px;">
+                            </td>
+                            {% else %}
+                            <td>
+                            </td>
+                            {% endif %}
+                            <td>{{product.name}}</td>
+                            <td>{{product.description}}</td>
+                            <td>${{product.price}}</td>
+                            <td class="text-end">
+
+                                <a href="{% url 'ProductManagement:productModify' product.id %}"
+                                    class="btn btn-antheaPink text-white mb-2"
+                                    style="width: 100px !important; height: 35px !important;"><i
+                                        class="fa fa-pencil"></i>
+                                    Editar
+                                </a>
+
+                                <button type="button" class="btn btn-antheaPink text-white" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{ product.id }}">
+                                    <i class="fa fa-trash"></i> Eliminar
+
+                                </button>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

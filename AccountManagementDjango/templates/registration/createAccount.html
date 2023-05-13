@@ -1,0 +1,54 @@
+{% include 'layout.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6 text-center">
+            <div class="card shadow">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-6">
+                        <img src="{% static 'img/antheaLogo-bg.png' %}" class="card-img-top" alt="...">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row mb-2 justify-content-center">
+                            <div class="col-6">
+                                <h2 class="card-title">Crear cuenta</h2>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                {{form.first_name|as_crispy_field}}
+                            </div>
+                            <div class="col-6">
+                                {{form.last_name|as_crispy_field}}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                {{form.phone_number|as_crispy_field}}
+                            </div>
+                            <div class="col-6">
+                                {{form.email|as_crispy_field}}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                {{form.password1|as_crispy_field}}
+                            </div>
+                            <div class="col-6">
+                                {{form.password2|as_crispy_field}}
+                            </div>
+                        </div>
+                        <button href="#" class="btn btn-antheaPink text-white shadow">Crear cuenta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

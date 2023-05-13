@@ -5,5 +5,6 @@ from . import views
 app_name="Catalog"
 
 urlpatterns = [
-    path('', views.index, name="index")
+    path('', views.index, name="index"),
+    path('Ajax/Search', views.getCards, name="getCards")
 ]

@@ -1,0 +1,45 @@
+{% include 'layout.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-6 col-lg-4 text-center">
+            <div class="card shadow">
+                <img src="{% static 'img/antheaLogo-bg.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <h2 class="card-title">Inicio de sesión</h2>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                {{form.username|as_crispy_field}}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                {{form.password|as_crispy_field}}
+                            </div>
+                        </div>
+                        {% if form.errors %}
+                        <p style="color:#e1c2c1;"><strong>El usuario o la contraseña son incorrectos.
+                                <br>
+                                Por
+                                favor intenta de nuevo.</strong></p>
+                        {% endif %}
+                        <button href="#" class="btn btn-antheaPink text-white shadow">Iniciar sesión</button>
+                        <p class="mt-2">No tienes cuenta? <a href="{% url 'CreateAccount' %}">regístrate</a></p>
+                        <p class="mt-2">Olvidaste tu contraseña? <a href="{% url 'password_reset' %}">recupérala</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

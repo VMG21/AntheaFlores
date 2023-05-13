@@ -5,12 +5,16 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 
 @staff_member_required
+def index(request):
+    return render(request, 'ProductManagement/index.html')
+
+@staff_member_required
 def productCreate(request):
     if request.method == "POST":
         productFormValidation = ProductForm(request.POST, request.FILES)
         if productFormValidation.is_valid():
             productFormValidation.save()
-            return redirect('Catalog:index')
+            return redirect('ProductManagement:productList')
         else:
             return render(request, 'ProductManagement/productCreate.html', {
                 "productForm": productFormValidation
@@ -36,7 +40,7 @@ def productModify(request, id):
         productFormValidation = ProductForm(request.POST, request.FILES, instance=product)
         if productFormValidation.is_valid():
             productFormValidation.save()
-            return redirect('Catalog:index')
+            return redirect('ProductManagement:productList')
         else:
             return render(request, 'ProductManagement/productModify.html', {
                 "product": product,
@@ -54,6 +58,7 @@ def productModify(request, id):
 
 @staff_member_required
 def productDelete(request, id):
-    product = Product.objects.get(id)
-    product.delete()
-    return redirect('/productList.html')
+    if request.method == "POST":
+        product = Product.objects.get(id=id)
+        product.delete()
+        return redirect('ProductManagement:productList')

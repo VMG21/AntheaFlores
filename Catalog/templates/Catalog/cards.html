@@ -1,0 +1,33 @@
+{% for product in products %}
+<div class="col-12 col-sm-3">
+    <div class="card shadow h-100">
+        <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">
+                <span class="material-icons align-bottom" style="color: #e1c2c1;">
+                    paid
+                </span>{{ product.price }}
+            </p>
+            <p class="card-text">{{ product.description }}</p>
+            <div class="mt-auto text-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary text-white "
+                    style="background-color: #e1c2c1; border-color: #e1c2c1;" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal{{ product.id }}">
+                    Agregar al carrito
+                </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal{{ product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <!-- Modal content -->
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="alert alert-antheaPink" role="alert">
+    No han sido registrados los productos
+</div>
+{% endfor %}
