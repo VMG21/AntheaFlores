@@ -11,16 +11,16 @@
                 producto</a>
         </div>
     </div>
-
-    <form class="row mt-3">
+    <form class="row mt-3" action="{% url 'ProductManagement:productList' %}" method="POST">
+        {% csrf_token %}
         <div class="col-12">
-            <label class="visually-hidden" for="inlineFormInputGroupUsername">Buscar productos</label>
+            <label class="visually-hidden" for="inlineFormInputGroupUsername">Buscar Productos</label>
             <div class="input-group">
                 <div class="input-group-text bg-white"><span class="material-icons" style="color: #e1c2c1;">
                         search
                     </span></div>
-                <input type="text" class="form-control border-start-0" id="inlineFormInputGroupUsername"
-                    placeholder="Buscar productos">
+                <input type="text" class="form-control border-start-0" id="id_search" placeholder="Buscar Productos"
+                    name="search" maxlength="200">
             </div>
         </div>
     </form>

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from db.models import *
 from .forms import *
 from django.contrib.admin.views.decorators import staff_member_required
-
+from django.db.models import Q
 
 @staff_member_required
 def index(request):
@@ -25,7 +25,23 @@ def productCreate(request):
     
 @staff_member_required
 def productList(request):
-    return render(request, 'ProductManagement/productList.html', {"productList": Product.objects.all()})
+    if request.method == "POST":
+        form = ProductSearchForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['search'] == "":
+                productList = Product.objects.all()
+            else:
+                productList = Product.objects.filter(
+                    (Q (name__icontains=form.cleaned_data['search']) |
+                    Q (description__icontains=form.cleaned_data['search']) |
+                    Q (price__icontains=form.cleaned_data['search'])) 
+                )
+            return render(request, 'ProductManagement/productList.html', {
+                "productList": productList,
+                 "form": form
+            })
+    else:
+        return render(request, 'ProductManagement/productList.html', {"productList": Product.objects.all()})
 
 @staff_member_required
 def productModify(request, id):
