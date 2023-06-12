@@ -19,7 +19,7 @@ def clientList(request):
                     Q (last_name__icontains=form.cleaned_data['search']) |
                     Q (email__icontains=form.cleaned_data['search']) |
                     Q (phone_number__icontains=form.cleaned_data['search'])) &
-                    Q (is_staff=False)
+                    Q (is_staff=False) & Q (is_active=True)
                 )
             return render(request, 'SalesManagement/clientList.html', {
                 "clientList": clientList,
@@ -28,7 +28,7 @@ def clientList(request):
     else:
         form = ClientSearchForm()
         return render(request, 'SalesManagement/clientList.html', {
-            "clientList": User.objects.filter(is_staff=False),
+            "clientList": User.objects.filter(is_staff=False, is_active=True ),
             "form": form
         })
 
@@ -36,5 +36,6 @@ def clientList(request):
 def clientBlock(request, id):
     if request.method == "POST":
         client = User.objects.get(id=id)
-        client.active = False
+        client.is_active = False
+        client.save()
         return redirect('SalesManagement:clientList')
