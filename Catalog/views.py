@@ -1,6 +1,7 @@
 import json
 import time
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from db.models import Product
 
@@ -8,7 +9,7 @@ from db.models import Product
 def index(request):
     return render(request, 'Catalog/index.html')
 
-
+@csrf_exempt
 def getCards(request):
     time.sleep(1)
     json_data = json.loads(request.body)

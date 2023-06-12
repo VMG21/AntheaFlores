@@ -1,0 +1,88 @@
+{% load crispy_forms_tags %}
+{% include 'layout.html' %}
+{% block body %}
+<div class="container">
+    <div class="row mt-5 justify-content-between">
+        <div class="col-12 col-sm-6 text-start">
+            <h2>Clientes</h2>
+        </div>
+
+    </div>
+    <!--Client search form  -->
+    <form class="row mt-3" action="{% url 'SalesManagement:clientList' %}" method="POST">
+        {% csrf_token %}
+        <div class="col-12">
+            <label class="visually-hidden" for="inlineFormInputGroupUsername">Buscar Clientes</label>
+            <div class="input-group">
+                <div class="input-group-text bg-white"><span class="material-icons" style="color: #e1c2c1;">
+                        search
+                    </span></div>
+                <input type="text" class="form-control border-start-0" id="id_search" placeholder="Buscar Clientes"
+                    name="search" maxlength="200">
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table ">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            <td>Correo</td>
+                            <td>Nombre</td>
+                            <td>Teléfono</td>
+                            <td class="text-center">Acciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clientList %}
+                        <!-- Button trigger modal -->
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ client.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Bloquear {{ client.name }}
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Estas seguro que deseas Bloquear el cliente?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'SalesManagement:clientBlock' client.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-antheaPink text-white"
+                                                style="width: 100px !important; height: 35px !important;"> <i
+                                                    class="fa fa-trash"></i> Bloquear</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <tr>
+
+                            <td>{{client.email}}</td>
+                            <td>{{client.first_name}} {{ client.last_name }}</td>
+                            <td>{{client.phoneNumber}}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-antheaPink text-white" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{ client.id }}">
+                                    <i class="fa fa-trash"></i> Bloquear
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

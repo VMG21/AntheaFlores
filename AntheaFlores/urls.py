@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Catalog.urls')),
     path('adminPanel/',include( 'ProductManagement.urls')),
+    path('adminPanel/',include( 'SalesManagement.urls')),
     path('Administracion/Cuentas/',include( 'AccountManagementDjango.urls'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
