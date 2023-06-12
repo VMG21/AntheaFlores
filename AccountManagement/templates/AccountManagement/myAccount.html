@@ -1,0 +1,56 @@
+{% load crispy_forms_tags %}
+{% include 'layout.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="row mt-5 justify-content-between mb-3">
+        <!-- Botón de regresar -->
+        <div class="col-12 col-sm-4 text-start">
+
+            <a class="btn btn-antheaPink text-white" href="{% url 'AccountManagement:userProfile' %}">
+                <h5 class="card-title">
+                    <span class="material-icons align-middle" style="color: #FFFF;">
+                        arrow_back_ios
+                    </span>
+                    Regresar
+                </h5>
+            </a>
+        </div>
+    </div>
+    <div class="row gy-3 justify-content-center">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        <img src="{% static 'img/antheaLogo-bg.png' %}" class="card-img-top" alt="...">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="card-title">Nombre(s)</h5>
+                            <p class="card-text">{{ client.first_name }}</p>
+                        </div>
+                        <hr>
+                        <div class="col-12">
+                            <h5 class="card-title">Apellido(s)</h5>
+                            <p class="card-text">{{ client.last_name }}</p>
+                        </div>
+                        <hr>
+                        <div class="col-12">
+                            <h5 class="card-title">Correo</h5>
+                            <p class="card-text">{{ client.email }}</p>
+                        </div>
+                        <hr>
+                        <div class="col-12">
+                            <h5 class="card-title">Teléfono</h5>
+                            <p class="card-text">{{ client.phone_number }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

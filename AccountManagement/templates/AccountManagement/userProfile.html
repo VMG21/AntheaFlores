@@ -1,0 +1,48 @@
+{% load crispy_forms_tags %}
+{% include 'layout.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-4">
+            <img src="{% static 'img/antheaLogo-bg.png' %}" class="card-img-top" alt="...">
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center text-center">
+        <div class="col-12">
+            <h2>Mi Perfil</h2>
+        </div>
+    </div>
+    <div class="row gy-3">
+        <div class="col-12 col-sm-6 col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mis direcciones</h5>
+                    <p class="card-text">Agrega, modifica, elimina direcciones.</p>
+                    <a href="{% url 'AccountManagement:addressList' %}" class="btn btn-antheaPink text-white">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mis pedidos</h5>
+                    <p class="card-text">Tu listado de pedidos y sus estados.</p>
+                    <a href="{% url 'AccountManagement:myPurchases' %}" class="btn btn-antheaPink text-white">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mi cuenta</h5>
+                    <p class="card-text">Tu información personal.</p>
+                    <a href="{% url 'AccountManagement:myAccount' %}" class="btn btn-antheaPink text-white">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
