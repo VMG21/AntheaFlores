@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 ORDER_STATES = [
-    ("Cart", "Cart"), 
+    ("Carrito", "Carrito"), 
     ("Confirmado", "Confirmado"),
     ("Enviado", "Enviado"),
     ("Entregado", "Entregado"),
@@ -91,7 +91,6 @@ class Municipally(models.Model):
 
 class DeliveryAddress(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField("Nombre", max_length=100)
     internalNumber = models.PositiveIntegerField(
         "Numero Interior", blank=True, null=True)
     outdoorNumber = models.PositiveIntegerField("Numero Exterior")
@@ -103,7 +102,7 @@ class DeliveryAddress(models.Model):
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     reference = models.CharField(
         "Reference", max_length=200, blank=True, null=True)
-    disable = models.BooleanField(default=False)
+    disable = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return f"{self.street} # {self.outdoorNumber}, {self.state}, {self.municipally}"

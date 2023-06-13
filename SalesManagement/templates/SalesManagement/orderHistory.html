@@ -4,14 +4,7 @@
 <div class="container">
     <div class="row mt-5 justify-content-between">
         <div class="col-12 col-sm-6 text-start">
-            <a class="btn btn-antheaPink text-white mb-2" href="{% url 'AccountManagement:userProfile' %}">
-                <h5 class="card-title">
-                    <span class="material-icons align-middle" style="color: #FFFF;">
-                        arrow_back_ios
-                    </span>
-                    Regresar
-                </h5>
-            </a>
+
             <h2>Pedidos</h2>
         </div>
     </div>
@@ -36,6 +29,7 @@
                 <table class="table ">
                     <thead class="border-bottom font-weight-bold">
                         <tr>
+
                             <td>Id</td>
                             <td>Fecha de pedido</td>
                             <td>Ultima modificación</td>
@@ -61,12 +55,13 @@
                                     </span>
                                     {{order.status}}
                                 </div>
+
                             </td>
                             {% elif order.status == 'Confirmado' %}
                             <td>
                                 <div class="btn btn-antheaPink text-white disabled">
                                     <span class="material-icons align-middle ">
-                                        done
+                                        shopping_cart
                                     </span>
                                     {{order.status}}
                                 </div>
@@ -75,7 +70,7 @@
                             <td>
                                 <div class="btn btn-antheaPink text-white disabled">
                                     <span class="material-icons align-middle ">
-                                        local_shipping
+                                        shopping_cart
                                     </span>
                                     {{order.status}}
                                 </div>
@@ -84,7 +79,7 @@
                             <td>
                                 <div class="btn btn-antheaPink text-white disabled">
                                     <span class="material-icons align-middle ">
-                                        check_circle
+                                        shopping_cart
                                     </span>
                                     {{order.status}}
                                 </div>

@@ -6,3 +6,7 @@ class ClientSearchForm(forms.Form):
         label="Nombre(s)", max_length=200, required=False
     )
     
+class OrderSearchForm(forms.Form):
+    search = forms.CharField(
+        label="Nombre(s)", max_length=200, required=False
+    )

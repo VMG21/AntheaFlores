@@ -4,14 +4,7 @@
 <div class="container">
     <div class="row mt-5 justify-content-between">
         <div class="col-12 col-sm-6 text-start">
-            <a class="btn btn-antheaPink text-white mb-2" href="{% url 'AccountManagement:userProfile' %}">
-                <h5 class="card-title">
-                    <span class="material-icons align-middle" style="color: #FFFF;">
-                        arrow_back_ios
-                    </span>
-                    Regresar
-                </h5>
-            </a>
+
             <h2>Pedidos</h2>
         </div>
     </div>
@@ -92,6 +85,7 @@
                             {% endif %}
                         </tr>
                         {% endfor %}
+
                     </tbody>
                 </table>
             </div>

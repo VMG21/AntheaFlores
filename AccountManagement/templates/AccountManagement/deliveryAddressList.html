@@ -1,0 +1,106 @@
+{% load crispy_forms_tags %}
+{% include 'layout.html' %}
+{% block body %}
+<div class="container">
+
+    <div class="row mt-5 justify-content-between">
+        <div class="col-12 col-sm-6 text-start">
+            <a class="btn btn-antheaPink text-white mb-2" href="{% url 'AccountManagement:userProfile' %}">
+                <h5 class="card-title">
+                    <span class="material-icons align-middle" style="color: #FFFF;">
+                        arrow_back_ios
+                    </span>
+                    Regresar
+                </h5>
+            </a>
+            <h2>Direcciones</h2>
+        </div>
+        <div class="col-12 col-sm-6 text-end">
+            <a class="btn btn-antheaPink text-white" href="{% url 'AccountManagement:addressCreate' %}">
+                Registrar nueva
+                dirección</a>
+        </div>
+    </div>
+    <form class="row mt-3" action="{% url 'AccountManagement:addressList' %}" method="POST">
+        {% csrf_token %}
+        <div class="col-12">
+            <label class="visually-hidden" for="inlineFormInputGroupUsername">Buscar Direcciones</label>
+            <div class="input-group">
+                <div class="input-group-text bg-white"><span class="material-icons" style="color: #e1c2c1;">
+                        search
+                    </span></div>
+                <input type="text" class="form-control border-start-0" id="id_search" placeholder="Buscar Direcciones"
+                    name="search" maxlength="200">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table ">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            <td>Dirección</td>
+                            <td class="text-center">Acciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for deliveryAddress in addressList %}
+                        <!-- Button trigger modal -->
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ deliveryAddress.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar
+                                            {{ deliveryAddress }}
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Estas seguro que deseas eliminar la dirección?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'AccountManagement:addressDelete' deliveryAddress.id %}"
+                                            method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-antheaPink text-white"
+                                                style="width: 100px !important; height: 35px !important;"> <i
+                                                    class="fa fa-trash"></i> Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <tr class="align-middle">
+
+                            <td>{{deliveryAddress}}</td>
+                            <td class="text-center">
+
+                                <a href="{% url 'AccountManagement:addressModify' deliveryAddress.id %}"
+                                    class="btn btn-antheaPink text-white">
+                                    <i class="fa fa-pencil"></i>
+                                    Editar
+                                </a>
+
+                                <button type="button" class="btn btn-antheaPink text-white" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{ deliveryAddress.id }}">
+                                    <i class="fa fa-trash"></i> Eliminar
+
+                                </button>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

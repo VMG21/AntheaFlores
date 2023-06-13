@@ -39,3 +39,60 @@ def clientBlock(request, id):
         client.is_active = False
         client.save()
         return redirect('SalesManagement:clientList')
+
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
+def orderList(request):
+    if request.method == "POST":
+        form = OrderSearchForm(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data['search']
+            if search == "":
+                orderList = Order.objects.exclude(status__in=['Entregado', 'Carrito']).order_by('-ordered_date')
+            else:
+                orderList = Order.objects.filter(
+                    Q(status__icontains=search) |
+                    (Q(total=search) if search.isdigit() else Q())
+                ).exclude(status__in=['Entregado', 'Carrito']).order_by('-ordered_date')
+
+            return render(request, 'SalesManagement/orderList.html', {
+                "orderList": orderList,
+                 "form": form
+            })
+    else:
+        form = OrderSearchForm()
+        return render(request, 'SalesManagement/orderList.html', {
+            "orderList": Order.objects.exclude(status__in=['Entregado', 'Carrito']).order_by('-ordered_date'),
+            "form": form
+        })
+
+    
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
+def orderHistory(request):
+    if request.method == "POST":
+        form = OrderSearchForm(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data['search']
+            if search == "":
+                orderList = Order.objects.filter(status='Entregado')
+            else:
+                orderList = Order.objects.filter(
+                    Q(status__icontains=search) |
+                    (Q(total=search) if search.isdigit() else Q()),
+                    status='Entregado'
+                )
+                
+            return render(request, 'SalesManagement/orderHistory.html', {
+                "orderList": orderList.order_by('-ordered_date'),
+                 "form": form
+            })
+    else:
+        form = OrderSearchForm()
+        return render(request, 'SalesManagement/orderHistory.html', {
+            "orderList": Order.objects.filter(status='Entregado').order_by('-ordered_date'),
+            "form": form
+        })

@@ -9,5 +9,6 @@ app_name="SalesManagement"
 urlpatterns = [
     path('clientBlock/<int:id>', views.clientBlock, name="clientBlock"),
     path('ListaClientes', views.clientList, name="clientList"),
-  
+    path('ListaPedidos', views.orderList, name="orderList"),
+    path('HistorialPedidos', views.orderHistory, name="orderHistory"),
 ]
