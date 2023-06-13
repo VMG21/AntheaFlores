@@ -9,7 +9,7 @@
         </div>
     </div>
     <!--Client search form  -->
-    <form class="row mt-3" action="{% url 'AccountManagement:orderList' %}" method="POST">
+    <form class="row mt-3" action="{% url 'SalesManagement:orderList' %}" method="POST">
         {% csrf_token %}
         <div class="col-12">
             <label class="visually-hidden" for="inlineFormInputGroupUsername">Buscar Pedidos</label>
@@ -35,10 +35,48 @@
                             <td>Dirección</td>
                             <td>Total</td>
                             <td>Estado</td>
+                            <td class="text-center">Cambio de estado</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% for order in orderList %}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ order.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar pedido
+                                            {{order.id}}
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form action="{% url 'SalesManagement:orderStatusChange' %}" method="POST">
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+                                            Selecciona un estado para el pedido
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            Selecciona un estado para el pedido
+                                            <select name="status" class="form-control">
+                                                <option value="Carrito" {% if order.status == 'Carrito' %}selected{% endif %}>Carrito</option>
+                                                <option value="Confirmado" {% if order.status == 'Confirmado' %}selected{% endif %}>Confirmado</option>
+                                                <option value="Enviado" {% if order.status == 'Enviado' %}selected{% endif %}>Enviado</option>
+                                                <option value="Entregado" {% if order.status == 'Entregado' %}selected{% endif %}>Entregado</option>
+                                            </select>
+
+                                            <input type="hidden" name="id" value="{{ order.id }}">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-antheaPink text-white">                                                
+                                                Cambiar estado
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Button trigger modal -->
                         <tr class="align-middle user-select-none">
                             <td>{{order.id}}</td>
@@ -83,8 +121,16 @@
                                 </div>
                             </td>
                             {% endif %}
+                            <td class="text-end">
+                                <button type="button" class="btn btn-antheaPink text-white" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{ order.id }}">
+                                    <i class="fa fa-pencil"></i> Editar estado
+
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
+
 
                     </tbody>
                 </table>

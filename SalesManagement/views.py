@@ -54,6 +54,7 @@ def orderList(request):
             else:
                 orderList = Order.objects.filter(
                     Q(status__icontains=search) |
+                    Q(address__street__icontains=search) |
                     (Q(total=search) if search.isdigit() else Q())
                 ).exclude(status__in=['Entregado', 'Carrito']).order_by('-ordered_date')
 
@@ -75,6 +76,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 def orderHistory(request):
     if request.method == "POST":
         form = OrderSearchForm(request.POST)
+        form2 = OrderStatusChangeForm(request.POST)
         if form.is_valid():
             search = form.cleaned_data['search']
             if search == "":
@@ -82,17 +84,32 @@ def orderHistory(request):
             else:
                 orderList = Order.objects.filter(
                     Q(status__icontains=search) |
+                    Q(address__street__icontains=search) |
                     (Q(total=search) if search.isdigit() else Q()),
                     status='Entregado'
                 )
                 
             return render(request, 'SalesManagement/orderHistory.html', {
                 "orderList": orderList.order_by('-ordered_date'),
-                 "form": form
+                "form": form,
+                "form2": form2
             })
     else:
         form = OrderSearchForm()
+        form2 = OrderStatusChangeForm()
         return render(request, 'SalesManagement/orderHistory.html', {
             "orderList": Order.objects.filter(status='Entregado').order_by('-ordered_date'),
-            "form": form
+            "form": form,
+            "form2": form2
         })
+
+@staff_member_required
+def orderStatusChange(request):
+    if request.method == "POST":
+        form = OrderStatusChangeForm(request.POST)
+        if form.is_valid():
+            order = Order.objects.get(id=form.cleaned_data['order_id'])
+            order.status = form.cleaned_data['status']
+            order.save()
+            return redirect('SalesManagement:orderList')
+    

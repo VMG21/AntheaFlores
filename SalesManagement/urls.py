@@ -11,4 +11,5 @@ urlpatterns = [
     path('ListaClientes', views.clientList, name="clientList"),
     path('ListaPedidos', views.orderList, name="orderList"),
     path('HistorialPedidos', views.orderHistory, name="orderHistory"),
+    path('CambioDeEstado', views.orderStatusChange, name="orderStatusChange"),
 ]
