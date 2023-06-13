@@ -2,7 +2,12 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
-ORDER_STATES = [("Cart", "Cart"), ("Confirmado", "Confirmado")]
+ORDER_STATES = [
+    ("Cart", "Cart"), 
+    ("Confirmado", "Confirmado"),
+    ("Enviado", "Enviado"),
+    ("Entregado", "Entregado"),
+]
 
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nombre")
@@ -100,7 +105,7 @@ class DeliveryAddress(models.Model):
         "Reference", max_length=200, blank=True, null=True)
     disable = models.BooleanField(default=False)
 
-    def str(self):
+    def __str__(self):
         return f"{self.street} # {self.outdoorNumber}, {self.state}, {self.municipally}"
 
 class Order(models.Model):
@@ -110,8 +115,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     total = models.DecimalField(blank=True, null=True, max_digits=7, decimal_places=2)
     address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.user.username
+    
     
 
 class OrderProduct(models.Model):

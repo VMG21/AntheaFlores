@@ -12,7 +12,7 @@ urlpatterns = [
     path('MiCuenta' , views.myAccount, name="myAccount"),
     
     # Compras
-    path('' , views.myPurchases, name="myPurchases"),
+    path('MisPedidos' , views.orderList, name="orderList"),
     # Direcciones
     path('Direcciones' , views.addressList, name="addressList"),
     path('CrearDirección' , views.addressCreate, name="addressCreate"),

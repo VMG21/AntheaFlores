@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, render
 from db.models import *
+from .forms import *
+from django.db.models import Q
 
 # Create your views here.
 
@@ -12,14 +14,32 @@ def myAccount(request):
         'client': client
     })
 
-def myPurchases(request):
-    orderList = Order.objects.all(client=request.user)
-    return render(request, 'AccountManagement/myPurchases.html',{
-        'orderList': orderList
-    })
+def orderList(request):
+    if request.method =="POST":
+        form = OrderSearchForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['search'] == "":
+                orderList = Order.objects.all()
+            else:
+                orderList = Order.objects.filter(
+                    Q(status__icontains=form.cleaned_data['search']) |
+                    Q(address__street__icontains=form.cleaned_data['search']) |
+                    Q(total__icontains=form.cleaned_data['search']) 
+                
+                )
+            return render(request, 'AccountManagement/orderList.html', {
+                "orderList": orderList,
+                 "form": form
+            })
+
+    else:  
+        orderList = Order.objects.filter(client=request.user)
+        return render(request, 'AccountManagement/orderList.html',{
+            'orderList': orderList
+        })
 
 def addressList(request):
-    addressList = DeliveryAddress.objects.all(client=request.user)
+    addressList = DeliveryAddress.objects.filter(client=request.user)
     return render(request, 'AccountManagement/addressList.html',{
         'addressList': addressList
     })
