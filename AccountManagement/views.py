@@ -34,6 +34,8 @@ def orderList(request):
             })
 
     else:  
+        if Order.objects.filter(client=request.user, status="Carrito").exists():
+            orderList = Order.objects.filter(client=request.user, status="Carrito")
         orderList = Order.objects.filter(client=request.user)
         return render(request, 'AccountManagement/orderList.html',{
             'orderList': orderList
@@ -108,4 +110,16 @@ def addressDelete(request, id):
         address.save()
         return redirect('AccountManagement:addressList')
     
-    
+@login_required
+def add_product_to_cart(request, product_id):
+    if request.method == "POST":
+        quantity = request.POST['quantity']
+        product = Product.objects.get(id=product_id)
+        if Order.objects.filter(client=request.user, status="Carrito").exists():
+            order = Order.objects.get(client=request.user, status="Carrito")
+        else:
+            order = Order.objects.create(client=request.user, status="Carrito")
+        orderProduct = OrderProduct.objects.create(order=order, product=product, quantity=quantity, price=product.price)
+        order.total += orderProduct.price
+        order.save()
+        return redirect('AccountManagement:orderList')

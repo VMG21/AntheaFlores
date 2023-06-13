@@ -18,4 +18,5 @@ urlpatterns = [
     path('CrearDirección' , views.addressCreate, name="addressCreate"),
     path('ModificarDirección/<int:id>' , views.addressModify, name="addressModify"),
     path('EliminarDirección/<int:id>' , views.addressDelete, name="addressDelete"),
+    path('add_product_to_cart/<int:product_id>' , views.add_product_to_cart, name="add_product_to_cart"),
 ]
