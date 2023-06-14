@@ -110,10 +110,10 @@ class DeliveryAddress(models.Model):
 class Order(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(choices=ORDER_STATES, max_length=500)
-    start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
+    start_date = models.DateTimeField(blank=True, null=True)
+    ordered_date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(blank=True, null=True, max_digits=7, decimal_places=2)
-    address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
+    address = models.ForeignKey( DeliveryAddress, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Dirección")
     
     
 
@@ -124,4 +124,4 @@ class OrderProduct(models.Model):
     subtotal = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
-        return self.name 
+        return self.product.name 

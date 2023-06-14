@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container">
+    <div class="row mt-5 justify-content-between">
+        <div class="col-12 col-sm-6 text-start">
+            <a class="btn btn-antheaPink text-white mb-2" href="{% url 'AccountManagement:userProfile' %}">
+                <h5 class="card-title">
+                    <span class="material-icons align-middle" style="color: #FFFF;">
+                        arrow_back_ios
+                    </span>
+                    Regresar al Catálogo
+                </h5>
+            </a>
+            <h2>Carrito de compras</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="card" >
+                
+                <div class="card-body py-0 ps-0">
+                    {% for product in orderProducts %}
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal{{ product.product.id }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar {{ product.product.name }}
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Estas seguro que deseas eliminar el producto?
+                            </div>
+                            <div class="modal-footer">
+                                <form action="{% url 'Catalog:orderProductDelete' product.product.id %}"
+                                    method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-antheaPink text-white"
+                                        style="width: 100px !important; height: 35px !important;"> <i
+                                            class="fa fa-trash"></i> Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col p-0 m-0 my-auto">
+                            <img src="{{ product.product.image.url }}" alt="" class="rounded float-start" style="max-width: 100px;">
+                        </div>
+                        <div class="col my-auto">
+                            {{ product.product.name }}
+                        </div>
+                        <div class="col my-auto">
+                            Cantidad: {{ product.quantity }}
+                        </div> 
+                        <div class="col my-auto">
+                            $ {{ product.product.price }}
+                        </div>
+                        <div class="col my-auto">
+                            <button type="button" class="btn btn-antheaPink text-white" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{ product.product.id }}">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card" >
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Total:</h5>
+                  <p class="card-text">{{ order.total }}</p>
+                  <form action="{% url 'Catalog:orderResume' %}" method="POST" class="text-center">
+
+                      {{ form.address|as_crispy_field }}
+                      
+                      <button type="submit" class="btn btn-antheaPink text-white mx-auto">
+                        Solicitar pedido
+                      </button>
+                  </form>
+                </div>
+              </div>
+        </div>
+
+    </div>
+  
+</div>
+
+{% endblock %}s
