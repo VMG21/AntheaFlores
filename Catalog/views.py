@@ -79,11 +79,11 @@ def getCart(request):
          if Order.objects.filter(client=request.user, status="Carrito").exists():
             order = Order.objects.get(client=request.user, status="Carrito")
             orderProducts = OrderProduct.objects.filter(order=order)
-            deliveryAddress = DeliveryAddress.objects.filter(client=request.user)
+            addresses = DeliveryAddress.objects.filter(client=request.user)
             return render(request, 'Catalog/cart.html',{
                 'orderProducts': orderProducts,
                 'order': order,
-                'deliveryAddress': deliveryAddress,
+                'addresses': addresses,
                 'form': OrderForm()
             })         
     return redirect('Catalog:index')
@@ -98,12 +98,13 @@ def orderProductDelete(request, orderProduct_id):
         return redirect('Catalog:getCart')
     
 def orderResume(request):
-    if request.user.is_authenticated and not request.user.is_staff:
-        if Order.objects.filter(client=request.user, status="Carrito").exists():
-            order = Order.objects.get(client=request.user, status="Carrito")
-            orderProducts = OrderProduct.objects.filter(order=order)
-            return render(request, 'Catalog/resume.html',{
-                'orderProducts': orderProducts,
-                'order': order,
-            })         
-    return redirect('Catalog:index')
+    if request.method == "POST":
+        if request.user.is_authenticated and not request.user.is_staff:
+            if Order.objects.filter(client=request.user, status="Carrito").exists():
+                order = Order.objects.get(client=request.user, status="Carrito")
+                order.status = "Confirmado"
+                order.save()
+        return redirect('AccountManagement:orderList')
+    else:
+        return redirect('Catalog:index')
+    

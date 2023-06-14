@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 {% block body %}
 <div class="container">
     <div class="row mt-5 justify-content-between">
         <div class="col-12 col-sm-6 text-start">
-            <a class="btn btn-antheaPink text-white mb-2" href="{% url 'AccountManagement:userProfile' %}">
+            <a class="btn btn-antheaPink text-white mb-2" href="{% url 'Catalog:index' %}">
                 <h5 class="card-title">
                     <span class="material-icons align-middle" style="color: #FFFF;">
                         arrow_back_ios
@@ -17,81 +17,105 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-8">
-            <div class="card" >
-                
+        <div class="col-12 col-md-9">
+            {% for product in orderProducts %}
+            <div class="card mb-3">
+
                 <div class="card-body py-0 ps-0">
-                    {% for product in orderProducts %}
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal{{ product.product.id }}" tabindex="-1"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar {{ product.product.name }}
-                                </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Estas seguro que deseas eliminar el producto?
-                            </div>
-                            <div class="modal-footer">
-                                <form action="{% url 'Catalog:orderProductDelete' product.product.id %}"
-                                    method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-antheaPink text-white"
-                                        style="width: 100px !important; height: 35px !important;"> <i
-                                            class="fa fa-trash"></i> Eliminar</button>
-                                </form>
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar {{ product.product.name
+                                        }}
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Estas seguro que deseas eliminar el producto?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="{% url 'Catalog:orderProductDelete' product.product.id %}"
+                                        method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-antheaPink text-white"
+                                            style="width: 100px !important; height: 35px !important;"> <i
+                                                class="fa fa-trash"></i> Eliminar</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
                     <div class="row">
                         <div class="col p-0 m-0 my-auto">
-                            <img src="{{ product.product.image.url }}" alt="" class="rounded float-start" style="max-width: 100px;">
+                            <img src="{{ product.product.image.url }}" alt="" class="rounded float-start"
+                                style="max-width: 100px;">
                         </div>
                         <div class="col my-auto">
                             {{ product.product.name }}
                         </div>
                         <div class="col my-auto">
                             Cantidad: {{ product.quantity }}
-                        </div> 
+                        </div>
                         <div class="col my-auto">
                             $ {{ product.product.price }}
                         </div>
                         <div class="col my-auto">
                             <button type="button" class="btn btn-antheaPink text-white" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal{{ product.product.id }}">
+                                data-bs-target="#exampleModal{{ product.product.id }}">
                                 <i class="fa fa-trash"></i> Eliminar
                             </button>
                         </div>
                     </div>
-                    {% endfor %}
+
                 </div>
-              </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="col-12 col-md-4">
-            <div class="card" >
-                <img src="..." class="card-img-top" alt="...">
+        <div class="col-12 col-md-3">
+            <div class="card">
+                <img src="{% static 'img/antheaLogo-bg.png' %}" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h5 class="card-title">Total:</h5>
-                  <p class="card-text">{{ order.total }}</p>
-                  <form action="{% url 'Catalog:orderResume' %}" method="POST" class="text-center">
-
-                      {{ form.address|as_crispy_field }}
-                      
-                      <button type="submit" class="btn btn-antheaPink text-white mx-auto">
-                        Solicitar pedido
-                      </button>
-                  </form>
+                    <h5 class="card-title">Total:</h5>
+                    <p class="card-text">${{ order.total }}</p>
+                    <form action="{% url 'Catalog:orderResume' %}" method="POST">
+                        {% csrf_token %}
+                        <div id="div_id_address" class="form-group">
+                            <label for="id_address" class="">
+                                Dirección
+                            </label>
+                            <div>
+                                <select name="address" class="select form-control" id="id_address">
+                                    <option value="" selected="">---------</option>
+                                    {% for address in addresses %}
+                                    <option value="{{ address.id }}">{{address}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div id="div_id_address" class="form-group mt-3">
+                            <label for="id_address" class="">
+                                Método de pago
+                            </label>
+                            <div>
+                                <select name="address" class="select form-control" id="id_address">
+                                    <option value="" selected="">---------</option>
+                                    <option value="0">Efectivo</option>
+                                    <option value="1">Tarjeta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-antheaPink text-white mx-auto mt-3">
+                            Solicitar pedido
+                        </button>
+                    </form>
                 </div>
-              </div>
+            </div>
         </div>
-
     </div>
-  
 </div>
 
 {% endblock %}s
